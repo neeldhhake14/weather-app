@@ -125,6 +125,7 @@ async function getWeather(cityName) {
             throw new Error('City not found');
         }
     } catch (error) {
+        // Display error message
         weatherResult.innerHTML = `
             <div style="text-align:center; padding: 2rem;">
                 <h3>⚠️ Error</h3>
@@ -141,29 +142,60 @@ async function getWeather(cityName) {
 }
 
 function updateWeatherUI(cityName, weatherData) {
+    const weatherResult = document.getElementById('weatherResult');
+    // Make sure weatherResult contains the expected HTML structure
+    weatherResult.innerHTML = `
+        <div class="weather-header">
+            <div class="weather-icon"></div>
+            <h2 class="location"></h2>
+        </div>
+        <div class="weather-details">
+            <div class="detail-card">
+                <div class="detail-title">Temperature</div>
+                <div class="detail-value"></div>
+            </div>
+            <div class="detail-card">
+                <div class="detail-title">Wind Speed</div>
+                <div class="detail-value"></div>
+            </div>
+            <div class="detail-card">
+                <div class="detail-title">Humidity</div>
+                <div class="detail-value"></div>
+            </div>
+            <div class="detail-card">
+                <div class="detail-title">Pressure</div>
+                <div class="detail-value"></div>
+            </div>
+        </div>
+        <p class="timestamp"></p>
+    `;
+
     const current = weatherData.current_weather;
     const hourly = weatherData.hourly;
     const nowIndex = hourly.time.findIndex(time => time === current.time);
-    
+
     // Get additional data from hourly
     const humidity = nowIndex >= 0 ? hourly.relativehumidity_2m[nowIndex] : 'N/A';
     const pressure = nowIndex >= 0 ? hourly.pressure_msl[nowIndex] : 'N/A';
-    
+
     // Get weather icon based on conditions
     const weatherIcon = getWeatherIcon(current.weathercode);
-    
+
     // Format time
     const timeOptions = { hour: '2-digit', minute: '2-digit' };
     const formattedTime = new Date(current.time).toLocaleTimeString([], timeOptions);
-    
-    // Update DOM
-    document.querySelector('.weather-icon').textContent = weatherIcon;
-    document.querySelector('.location').textContent = cityName;
-    document.querySelector('.detail-value:nth-child(1)').innerHTML = `${current.temperature}<span class="detail-unit">°C</span>`;
-    document.querySelector('.detail-value:nth-child(2)').innerHTML = `${current.windspeed}<span class="detail-unit">km/h</span>`;
-    document.querySelector('.detail-value:nth-child(3)').innerHTML = `${humidity}<span class="detail-unit">%</span>`;
-    document.querySelector('.detail-value:nth-child(4)').innerHTML = `${pressure}<span class="detail-unit">hPa</span>`;
-    document.querySelector('.timestamp').textContent = `Last updated: ${formattedTime}`;
+
+    // Update DOM safely
+    weatherResult.querySelector('.weather-icon').textContent = weatherIcon;
+    weatherResult.querySelector('.location').textContent = cityName;
+    const detailValues = weatherResult.querySelectorAll('.detail-value');
+    if(detailValues.length === 4){
+        detailValues[0].innerHTML = `${current.temperature}<span class="detail-unit">°C</span>`;
+        detailValues[1].innerHTML = `${current.windspeed}<span class="detail-unit">km/h</span>`;
+        detailValues[2].innerHTML = `${humidity}<span class="detail-unit">%</span>`;
+        detailValues[3].innerHTML = `${pressure}<span class="detail-unit">hPa</span>`;
+    }
+    weatherResult.querySelector('.timestamp').textContent = `Last updated: ${formattedTime}`;
 }
 
 function getWeatherIcon(weatherCode) {
@@ -177,6 +209,5 @@ function getWeatherIcon(weatherCode) {
         80: '🌧️', 81: '🌧️', 82: '🌧️', 85: '❄️',
         86: '❄️', 95: '⛈️', 96: '⛈️', 99: '⛈️'
     };
-    
     return icons[weatherCode] || '🌤️';
 }
