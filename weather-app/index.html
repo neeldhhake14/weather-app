@@ -1,42 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dark Weather App</title>
-    <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-    
-    <!-- THIS IS THE CRITICAL LINK TO YOUR CSS FILE -->
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8" />
+<title>Weather App</title>
+<style>
+  /* your CSS styles here (from your CSS code) */
+</style>
 </head>
 <body>
-    <!-- Background animation -->
-    <canvas id="bgCanvas"></canvas>
-    
-    <!-- Main app container -->
-    <div class="container">
-        <h1>DARK WEATHER</h1>
-        <p class="tagline">Real-time weather in Grok-inspired style</p>
-        
-        <div class="input-group">
-            <input type="text" id="cityInput" placeholder="Search any city..." value="New York">
-            <button id="searchBtn">SEARCH</button>
-        </div>
-        
-        <div id="weatherResult">
-            <!-- Weather content will be populated by JavaScript -->
-        </div>
-        
-        <div class="loader">
-            <div class="loader-spinner"></div>
-            <p>Loading weather data...</p>
-        </div>
-        
-        <p class="footer">Built with HTML/CSS/JS • Open-Meteo API</p>
-    </div>
 
-    <!-- THIS IS THE CRITICAL LINK TO YOUR JAVASCRIPT FILE -->
-    <script src="script.js"></script>
+<canvas id="bgCanvas"></canvas>
+
+<div class="container">
+  <h1>Weather App</h1>
+  <div class="tagline">Check your weather</div>
+  <div class="input-group">
+    <input type="text" id="cityInput" placeholder="Enter city" />
+    <button id="searchBtn">Search</button>
+  </div>
+  <div id="weatherResult"></div>
+  <div class="loader" style="display:none;">
+    <div class="loader-spinner"></div>
+  </div>
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
